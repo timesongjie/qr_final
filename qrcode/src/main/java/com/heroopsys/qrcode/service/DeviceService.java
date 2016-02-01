@@ -41,6 +41,9 @@ public class DeviceService {
 	    if (!StringUtils.isEmpty(device.getSimPhone())) {
 		criteria.andSimPhoneEqualTo(device.getSimPhone());
 	    }
+	    if(StringUtils.isNotBlank(device.getContractPoint())){
+	    	criteria.andContractPointEqualTo(device.getContractPoint());
+	    }
 	    // ....可以按照条件新增
 	}
 	pager.setTotal(deviceMapper.countByExample(example));
