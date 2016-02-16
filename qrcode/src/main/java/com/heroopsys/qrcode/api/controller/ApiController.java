@@ -35,156 +35,158 @@ import com.heroopsys.qrcode.service.ServiceInfoService;
 @RequestMapping("/api")
 public class ApiController {
 
-    @Resource
-    private DeviceService deviceService;
-    @Resource
-    private AccountService accountService;
-    @Resource
-    private ServiceInfoService serviceInfoService;
-    @Resource
-    private NoticeService noticeService;
+	@Resource
+	private DeviceService deviceService;
+	@Resource
+	private AccountService accountService;
+	@Resource
+	private ServiceInfoService serviceInfoService;
+	@Resource
+	private NoticeService noticeService;
 
-    @RequestMapping("/auth")
-    public Result<IUser> login(String name, String pwd) {
-	Result<IUser> result = new Result<IUser>();
-	Account account = new Account();
-	account.setName(name);
-	account.setPassword(pwd);
-	account = accountService.findByAccount(account);
-	if (account == null || account.getId() == null) {
-	    result.setStatus((byte) 1);
-	    result.setMsg("登陆失败!");
-	} else {
-	    IUser user = new IUser();
-	    user.setUserName(name);
-	    String perm = account.getPerms();
-	    user.setEnable(new Byte[] { Byte.valueOf(perm.charAt(0) + ""), Byte.valueOf(perm.charAt(1) + ""),
-		    Byte.valueOf(perm.charAt(2) + "") });
-	    result.setData(user);
-	    result.setStatus((byte) 0);
-	    result.setMsg("登陆成功!");
+	@RequestMapping("/auth")
+	public Result<IUser> login(String name, String pwd) {
+		Result<IUser> result = new Result<IUser>();
+		Account account = new Account();
+		account.setName(name);
+		account.setPassword(pwd);
+		account = accountService.findByAccount(account);
+		if (account == null || account.getId() == null) {
+			result.setStatus((byte) 1);
+			result.setMsg("登陆失败!");
+		} else {
+			IUser user = new IUser();
+			user.setUserName(name);
+			String perm = account.getPerms();
+			user.setEnable(new Byte[] { Byte.valueOf(perm.charAt(0) + ""),
+					Byte.valueOf(perm.charAt(1) + ""),
+					Byte.valueOf(perm.charAt(2) + "") });
+			result.setData(user);
+			result.setStatus((byte) 0);
+			result.setMsg("登陆成功!");
+		}
+		return result;
 	}
-	return result;
-    }
 
-    @RequestMapping("/notice")
-    public Result<INotice> notice() {
-	Result<INotice> result = new Result<INotice>();
-	result.setStatus((byte) 0);
-	result.setMsg("获取公告成功!");
-	Notice notice = noticeService.getNewest();
-	INotice inotice = new INotice();
-	inotice.setNotice(notice.getNotice());
-	result.setData(inotice);
-	return result;
-    }
-
-    @RequestMapping("/service")
-    public Result<List<ServiceType>> service() {
-	Result<List<ServiceType>> result = new Result<List<ServiceType>>();
-	result.setStatus((byte) 0);
-	result.setMsg("获取服务类型成功!");
-	List<ServiceType> types = new ArrayList<ServiceType>();
-	ServiceType type = new ServiceType();
-	type.setServiceType("售前");
-	type.setId(1);
-	types.add(type);
-	ServiceType type2 = new ServiceType();
-	type2.setServiceType("售中");
-	type2.setId(2);
-	types.add(type2);
-	ServiceType type3 = new ServiceType();
-	type3.setServiceType("售后");
-	type3.setId(3);
-	types.add(type3);
-	result.setData(types);
-	return result;
-    }
-
-    @RequestMapping("/device/{qrcode}")
-    public Result<Device> device(@PathVariable String qrcode) {
-	Result<Device> result = new Result<Device>();
-	Device device = new Device();
-	device.setDeviceQrcode(qrcode);
-	//List<Device> devices = deviceService.findByQrcode(device);
-	List<Device> devices = deviceService.findByDevice(device);
-	if (!CollectionUtils.isEmpty(devices)) {
-	    result.setStatus((byte) 0);
-	    result.setMsg("获取设备成功!");
-	    result.setData(devices.get(0));
-//	    List<ServiceInfo> services = new ArrayList<ServiceInfo>();
-//	    ServiceInfo sevice = new ServiceInfo();
-//	    sevice.setServiceType(new ServiceType());
-//	    services.add(sevice);
-//	    device.setServices(services);
-	} else {
-	    result.setStatus((byte) 1);
-	    result.setMsg("设备不存在!");
+	@RequestMapping("/notice")
+	public Result<INotice> notice() {
+		Result<INotice> result = new Result<INotice>();
+		result.setStatus((byte) 0);
+		result.setMsg("获取公告成功!");
+		Notice notice = noticeService.getNewest();
+		INotice inotice = new INotice();
+		inotice.setNotice(notice.getNotice());
+		result.setData(inotice);
+		return result;
 	}
-	return result;
-    }
 
-    @RequestMapping(value = "/device/{page}/{row}", method = RequestMethod.POST)
-    public Result<Pager<Device>> devices(HttpServletRequest request, @PathVariable("row") int row,
-	    @PathVariable("page") int pageIndex) {
-	Result<Pager<Device>> result = new Result<Pager<Device>>();
-	String data = request.getParameter("data");
-	Pager<Device> page = new Pager<Device>();
-	try {
-	    page.setRows(row);
-	    page.setPage(pageIndex);
-	    Device device = new Device();
-	    if (data != null) {
-		device = JacksonUtil.readValue(data, Device.class);
-	    }
-	    deviceService.list(device, page);
-	    result.setData(page);
-	    result.setStatus((byte) 0);
-	} catch (Exception e) {
-	    e.printStackTrace();
+	@RequestMapping("/service")
+	public Result<List<ServiceType>> service() {
+		Result<List<ServiceType>> result = new Result<List<ServiceType>>();
+		result.setStatus((byte) 0);
+		result.setMsg("获取服务类型成功!");
+		List<ServiceType> types = new ArrayList<ServiceType>();
+		ServiceType type = new ServiceType();
+		type.setServiceType("售前");
+		type.setId(1);
+		types.add(type);
+		ServiceType type2 = new ServiceType();
+		type2.setServiceType("售中");
+		type2.setId(2);
+		types.add(type2);
+		ServiceType type3 = new ServiceType();
+		type3.setServiceType("售后");
+		type3.setId(3);
+		types.add(type3);
+		result.setData(types);
+		return result;
 	}
-	return result;
-    }
 
-    /**
-     * 追加产品信息
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = ("/device"), method = RequestMethod.POST)
-    public Result addDevice(HttpServletRequest request) {
-	Result result = new Result();
-	String data = request.getParameter("data");
-	try {
-	    Device device = JacksonUtil.readValue(data, Device.class);
-	    deviceService.addOrUpdateDevice(device);
-	    result.setStatus((byte) 0);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    result.setStatus((byte) 1);
+	@RequestMapping("/device/{qrcode}")
+	public Result<Device> device(@PathVariable String qrcode) {
+		Result<Device> result = new Result<Device>();
+		Device device = new Device();
+		device.setDeviceQrcode(qrcode);
+		// List<Device> devices = deviceService.findByQrcode(device);
+		List<Device> devices = deviceService.findByDevice(device);
+		if (!CollectionUtils.isEmpty(devices)) {
+			result.setStatus((byte) 0);
+			result.setMsg("获取设备成功!");
+			result.setData(devices.get(0));
+			// List<ServiceInfo> services = new ArrayList<ServiceInfo>();
+			// ServiceInfo sevice = new ServiceInfo();
+			// sevice.setServiceType(new ServiceType());
+			// services.add(sevice);
+			// device.setServices(services);
+		} else {
+			result.setStatus((byte) 1);
+			result.setMsg("设备不存在!");
+		}
+		return result;
 	}
-	return result;
-    }
 
-    /**
-     * 追加服务信息
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = ("/device/service"), method = RequestMethod.POST)
-    public Result addDeviceService(HttpServletRequest request) {
-	Result result = new Result();
-	String data = request.getParameter("data");
-	try {
-	    ServiceInfo service = JacksonUtil.readValue(data, ServiceInfo.class);
-	    serviceInfoService.addOrUpdateService(service);
-	    result.setStatus((byte) 0);
-	} catch (Exception e) {
-	    e.printStackTrace();
-	    result.setStatus((byte) 1);
+	@RequestMapping(value = "/device/{page}/{row}", method = RequestMethod.POST)
+	public Result<Pager<Device>> devices(HttpServletRequest request,
+			@PathVariable("row") int row, @PathVariable("page") int pageIndex) {
+		Result<Pager<Device>> result = new Result<Pager<Device>>();
+		String data = request.getParameter("data");
+		Pager<Device> page = new Pager<Device>();
+		try {
+			page.setRows(row);
+			page.setPage(pageIndex);
+			Device device = null;
+			if (data != null) {
+				device = JacksonUtil.readValue(data, Device.class);
+			}
+			deviceService.list(device, page);
+			result.setData(page);
+			result.setStatus((byte) 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
-	return result;
-    }
+
+	/**
+	 * 追加产品信息
+	 *
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = ("/device"), method = RequestMethod.POST)
+	public Result addDevice(HttpServletRequest request) {
+		Result result = new Result();
+		String data = request.getParameter("data");
+		try {
+			Device device = JacksonUtil.readValue(data, Device.class);
+			deviceService.addOrUpdateDevice(device);
+			result.setStatus((byte) 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus((byte) 1);
+		}
+		return result;
+	}
+
+	/**
+	 * 追加服务信息
+	 *
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = ("/device/service"), method = RequestMethod.POST)
+	public Result addDeviceService(HttpServletRequest request) {
+		Result result = new Result();
+		String data = request.getParameter("data");
+		try {
+			ServiceInfo service = JacksonUtil
+					.readValue(data, ServiceInfo.class);
+			serviceInfoService.addOrUpdateService(service);
+			result.setStatus((byte) 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setStatus((byte) 1);
+		}
+		return result;
+	}
 }
