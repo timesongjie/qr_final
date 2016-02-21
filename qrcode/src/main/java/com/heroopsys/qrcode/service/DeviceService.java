@@ -12,6 +12,7 @@ import com.heroopsys.qrcode.entity.Device;
 import com.heroopsys.qrcode.entity.DeviceExample;
 import com.heroopsys.qrcode.entity.DeviceExample.Criteria;
 import com.heroopsys.qrcode.util.Pager;
+import com.heroopsys.qrcode.util.SqlUtil;
 
 @Service
 public class DeviceService {
@@ -25,25 +26,25 @@ public class DeviceService {
 			Criteria criteria = example.createCriteria();
 			if (!StringUtils.isEmpty(device.getDeviceQrcode())) {
 				// criteria.andDeviceCodeEqualTo(device.getDeviceQrcode());
-				criteria.andDeviceQrcodeLike(device.getDeviceQrcode());
+				criteria.andDeviceQrcodeLike(SqlUtil.getLikeCondition(device.getDeviceQrcode()));
 			}
 			if (!StringUtils.isEmpty(device.getDeviceCode())) {
-				criteria.andDeviceCodeLike(device.getDeviceCode());
+				criteria.andDeviceCodeLike(SqlUtil.getLikeCondition(device.getDeviceCode()));
 			}
 			if (!StringUtils.isEmpty(device.getProjectName())) {
-				criteria.andProjectNameLike(device.getProjectName());
+				criteria.andProjectNameLike(SqlUtil.getLikeCondition(device.getProjectName()));
 			}
 			if (!StringUtils.isEmpty(device.getProjectLeader())) {
-				criteria.andProjectLeaderLike(device.getProjectLeader());
+				criteria.andProjectLeaderLike(SqlUtil.getLikeCondition(device.getProjectLeader()));
 			}
 			if (!StringUtils.isEmpty(device.getClientName())) {
-				criteria.andClientNameLike(device.getClientName());
+				criteria.andClientNameLike(SqlUtil.getLikeCondition(device.getClientName()));
 			}
 			if (!StringUtils.isEmpty(device.getSimPhone())) {
-				criteria.andSimPhoneLike(device.getSimPhone());
+				criteria.andSimPhoneLike(SqlUtil.getLikeCondition(device.getSimPhone()));
 			}
 			if (StringUtils.isNotBlank(device.getContractPoint())) {
-				criteria.andContractPointLike(device.getContractPoint());
+				criteria.andContractPointLike(SqlUtil.getLikeCondition(device.getContractPoint()));
 			}
 			// ....可以按照条件新增
 		}
@@ -82,4 +83,5 @@ public class DeviceService {
 	public Device findById(Integer id) {
 		return deviceMapper.selectByPrimaryKey(id);
 	}
+	
 }
