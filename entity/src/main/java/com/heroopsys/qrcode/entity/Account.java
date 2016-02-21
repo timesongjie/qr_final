@@ -11,7 +11,8 @@ public class Account {
     private Byte status;
     private String phoneNumber;
     private String perms;
-
+    private String oldPassword;
+    
     public Account() {
 
     }
@@ -68,5 +69,13 @@ public class Account {
     public void setPerms(String perms) {
 	this.perms = perms;
     }
+
+	public String getOldPassword() {
+		return oldPassword;
+	}
+
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
 
 }

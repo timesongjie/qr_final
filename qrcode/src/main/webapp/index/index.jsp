@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:url var="accountAction" value="/index/account.jsp"></c:url>
+<c:url var="updatePasswordAction" value="/mvc/account/info"></c:url>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -135,10 +136,10 @@
 		//修改密码
 		$('#passwordDialog').show().dialog({
 			modal : true,
-			closable : false,
+			closable : true,
 			width: 350,
 			iconCls : 'ext-icon-lock_edit',
-			buttons : [ {
+			buttons : [{
 				text : '修改',
 				handler : function() {
 					if ($('#passwordDialog form').form('validate')) {
@@ -203,12 +204,12 @@
 				<tr>
 					<th width="30%">新密码</th>
 					<td><input id="password" name="password" type="password" class="easyui-validatebox" 
-						style="width:200px;" data-options="required:true,validType:['password','length[0,100]']" missingMessage="请输入新密码"/></td>
+						style="width:200px;" data-options="required:true,validType:'newpassword[6]'" missingMessage="请输入新密码"/></td>
 				</tr>
 				<tr>
 					<th width="30%">重复密码</th>
 					<td><input type="password" class="easyui-validatebox" style="width:200px;" 
-						data-options="required:true,validType:['password','equalsPassword[\'#password\']','length[0,100]']" missingMessage="请输入重复密码"/></td>
+						data-options="required:true,validType:['newpassword[6]','equalsPassword[\'#password\']']" missingMessage="请输入重复密码"/></td>
 				</tr>
 			</table>
 		</form>

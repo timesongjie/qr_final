@@ -21,4 +21,13 @@
 $(".combo").click(function(){
 	$(this).prev().combobox("showPanel");
 })
+$.extend($.fn.validatebox.defaults.rules, {
+    newpassword: {
+		validator: function(value, param){
+			regex = /^\d{6}$/;
+			return value.length >= param[0] && regex.test(value);
+		},
+		message: '请输入 {0}位数字.'
+    }
+});
 </script>

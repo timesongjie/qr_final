@@ -38,7 +38,7 @@
 			<tr>
 				<th>密码</th>
 				<td>
-					<input type="password" name="password" data-options="required:true,validType:['password']"
+					<input type="password" name="password" data-options="required:true,validType:'newpassword[6]'"
 						class="easyui-validatebox" missingMessage="密码不能为空"  style="width:260px"/>
 				</td>
 			</tr>
