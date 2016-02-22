@@ -45,7 +45,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th>项目领导</th>
+			<th>项目经理</th>
 			<td>
 				${device.projectLeader}
 			</td>

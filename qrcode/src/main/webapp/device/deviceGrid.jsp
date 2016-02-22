@@ -46,7 +46,7 @@
 	var viewFun = function() {
 		var deviceArr = deviceGrid.datagrid("getSelections");
 		if (deviceArr && deviceArr.length < 1) {
-			parent.$.messager.alert("提示", "请选择要编辑的账号", "info");
+			parent.$.messager.alert("提示", "请选择要查看的产品", "info");
 			return;
 		}
 		var dialog = parent.modalDialog({
