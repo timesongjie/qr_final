@@ -18,7 +18,6 @@
 	}
 </style>
 </head>
-<body class="easyui-layout" data-options="fit:true,border:false">
 	<table width="100%" class="table tabs-title">
 		<tr>
 			<th>项目名称</th>
@@ -135,5 +134,6 @@
 			</td>
 		</tr>
 	</table>
-</body>
+<!-- <body class="easyui-layout" data-options="fit:true,border:false">
+</body> -->
 </html>

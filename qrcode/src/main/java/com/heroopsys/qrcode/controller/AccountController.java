@@ -131,11 +131,11 @@ public class AccountController extends BaseController {
 
 	private List<Tree> trans(String perms) {
 		List<Tree> lperm = new ArrayList<Tree>(3);
-		Tree first = new Tree("新增绑定信息", 1l);
+		Tree first = new Tree("新增基本信息", 1l);
 		isChecked(perms.charAt(0), first);
 		lperm.add(first);
 
-		Tree second = new Tree("新增基本信息", 2l);
+		Tree second = new Tree("修改基本信息", 2l);
 		isChecked(perms.charAt(1), second);
 		lperm.add(second);
 

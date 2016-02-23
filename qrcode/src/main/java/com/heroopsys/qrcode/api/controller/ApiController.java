@@ -10,6 +10,7 @@ import com.heroopsys.qrcode.util.Pager;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -159,6 +160,13 @@ public class ApiController {
 		String data = request.getParameter("data");
 		try {
 			Device device = JacksonUtil.readValue(data, Device.class);
+			//新增时检查是否设备ID已经绑定了二维码
+			if(device != null && StringUtils.isEmpty(device.getId())){
+				if(deviceService.isExist(device.getDeviceCode())){
+					result.setStatus((byte) 2);
+					return result;
+				}
+			}
 			deviceService.addOrUpdateDevice(device);
 			result.setStatus((byte) 0);
 		} catch (Exception e) {

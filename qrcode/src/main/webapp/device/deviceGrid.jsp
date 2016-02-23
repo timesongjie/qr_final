@@ -25,8 +25,8 @@
 		var dialog = parent.modalDialog({
 			title : '编辑产品信息',
 			url : '${editDeviceAction}/' + deviceArr[0].id+"?forward=edit",
-			height : 640,
-			width : 400,
+			height : 500,
+			width : 420,
 			buttons : [
 					{
 						text : '编辑',
@@ -52,8 +52,8 @@
 		var dialog = parent.modalDialog({
 			title : '查看产品信息',
 			url : '${viewDeviceAction}/' + deviceArr[0].id+"?forward=view",
-			height : 560,
-			width : 400,
+			height : 500,
+			width : 420,
 			buttons : [ {
 				text : '关闭',
 				handler : function() {

@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.heroopsys.qrcode.dao.DeviceMapper;
 import com.heroopsys.qrcode.entity.Device;
@@ -82,6 +83,17 @@ public class DeviceService {
 
 	public Device findById(Integer id) {
 		return deviceMapper.selectByPrimaryKey(id);
+	}
+
+	public boolean isExist(String deviceCode) {
+		DeviceExample device = new DeviceExample();
+		Criteria criteria = device.createCriteria();
+		criteria.andDeviceCodeEqualTo(deviceCode);
+		List<Device> devices = deviceMapper.selectByExampleAndPager(device, null);
+		if(CollectionUtils.isEmpty(devices)){
+			return false;
+		}
+		return true;
 	}
 	
 }

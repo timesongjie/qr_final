@@ -41,8 +41,11 @@ input{
 }
 </style>
 </head>
-<body class="easyui-layout" data-options="fit:true,border:false">
-<form id="deviceForm">
+<!-- <div id="p" class="easyui-panel" title="My Panel" 
+        style="width:400px;height:500px;background:#fafafa;"
+        data-options="iconCls:'icon-save',closable:false,collapsible:true,minimizable:true,maximizable:true,noheader:true">
+</div> -->
+  <form id="deviceForm">
 	<table width="100%" class="table tabs-title">
 	  <input type="hidden" name="id" value="${device.id }" id="id">
 		<tr>
@@ -102,18 +105,18 @@ input{
 		</tr>
 		<tr>
 			<th>激活码</th>
-			<td><input value="${device.activationCode}" name="activationCode" ></td>
+			<td><input value="${device.activationCode}" name="activationCode"  data-options="required:true" class="easyui-validatebox" ></td>
 		</tr>
 		<tr>
-			<th>激活码</th>
+			<th>激活码2</th>
 			<td><input value="${device.activationCode2}" name="activationCode2"></td>
 		</tr>
 		<tr>
-			<th>激活码</th>
+			<th>激活码3</th>
 			<td><input value="${device.activationCode3}"  name="activationCode3"></td>
 		</tr>
 		<tr>
-			<th>激活码</th>
+			<th>激活码4</th>
 			<td><input value="${device.activationCode4}"  name="activationCode4"></td>
 		</tr>
 		<tr>
@@ -134,5 +137,4 @@ input{
 		</tr>
 	</table>
 	</form>
-</body>
 </html>
