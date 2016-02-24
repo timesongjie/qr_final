@@ -59,7 +59,7 @@ CREATE TABLE `t_qrcode_permission` (
 
 CREATE TABLE `t_qrcode_notice` (
   `id` int(2) NOT NULL AUTO_INCREMENT COMMENT '通告流水号',
-  `notice` varchar(20) NOT NULL  COMMENT '通告',
+  `notice` varchar(100) NOT NULL  COMMENT '通告',
   `add_date` datetime COMMENT '通告时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='通告表';

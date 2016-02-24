@@ -22,6 +22,7 @@
 		resultMap="BaseResultMap">
 		select * from
 		t_qrcode_notice
+		order by add_date desc
 		limit
 		${page.offset},${page.rows};
 	</select>

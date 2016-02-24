@@ -21,7 +21,7 @@
             var dialog = parent.modalDialog({
                 title: '新增通知信息',
                 url: '${addNoticeAction}',
-                height: 120,
+                height: 130,
                 width: 450,
                 buttons: [{
                     text: '添加',
@@ -47,7 +47,7 @@
             var dialog = parent.modalDialog({
                 title: '编辑通知信息',
                 url: '${editNoticeAction}/' + noticeArr[0].id,
-                height: 120,
+                height: 130,
                 width: 450,
                 buttons: [{
                     text: '编辑',

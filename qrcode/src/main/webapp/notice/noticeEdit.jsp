@@ -31,7 +31,7 @@
 	}
 </script>
 </head>
-<body class="easyui-layout" data-options="fit:true,border:false">
+<body class="easyui-layout" data-options="fit:true,border:false"  style="padding-top: 15px;">
 	<form action="${editNoticeAction }" id="noticeForm">
 		<input type="hidden" name="id" value="${notice.id }" id="id">
 		<table width="100%" class="table tabs-title">
@@ -39,7 +39,7 @@
 				<tr>
 					<th>通知</th>
 					<td><input type="text" name="notice" value="${notice.notice}"
-						data-options="required:true" class="easyui-validatebox"
+						data-options="required:true,validType:['length[0,100]']"  class="easyui-validatebox"
 						missingMessage="通知不能为空" style="width: 260px" /></td>
 				</tr>
 			</table>
