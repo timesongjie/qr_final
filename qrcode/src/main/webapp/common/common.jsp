@@ -24,10 +24,10 @@ $(".combo").click(function(){
 $.extend($.fn.validatebox.defaults.rules, {
     newpassword: {
 		validator: function(value, param){
-			regex = /^\d{6}$/;
+			regex = /^\d{6,}$/;
 			return value.length >= param[0] && regex.test(value);
 		},
-		message: '请输入 {0}位数字.'
+		message: '请输入至少 {0}位数字.'
     }
 });
 </script>
