@@ -12,6 +12,7 @@ public class Account {
     private String phoneNumber;
     private String perms;
     private String oldPassword;
+    private Byte allow;//是否允许登录后台
     
     public Account() {
 
@@ -76,6 +77,17 @@ public class Account {
 
 	public void setOldPassword(String oldPassword) {
 		this.oldPassword = oldPassword;
+	}
+
+	public Byte getAllow() {
+		if(allow == null){
+			return 1;
+		}
+		return allow;
+	}
+
+	public void setAllow(Byte allow) {
+		this.allow = allow;
 	}
 
 }

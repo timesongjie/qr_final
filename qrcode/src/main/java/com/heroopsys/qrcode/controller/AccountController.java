@@ -36,8 +36,8 @@ public class AccountController extends BaseController {
 			HttpServletRequest request) {
 		Account account = new Account(username, password);
 		account = accountService.findByAccount(account) ;
-		account.setPassword(password);
-		if (account!= null) {
+		if (account!= null && account.getAllow() == 1) {
+			account.setPassword(password);
 			request.getSession().setAttribute("account_info", account);
 			return new Result("登陆成功!", true);
 		} else {
@@ -112,11 +112,16 @@ public class AccountController extends BaseController {
 	}
 
 	@RequestMapping(value = "/perm", method = RequestMethod.GET)
-	public List<Tree> toPermission(Long id) {
+	public List<Tree> toPermission(Long id,HttpServletRequest request) {
 		Account account = new Account();
 		account.setId(id);
 		account = accountService.findByAccount(account);
-		return trans(account.getPerms());
+		return trans(account,isAdmin(request));
+	}
+
+	private boolean isAdmin(HttpServletRequest request) {
+		Account user = (Account) request.getSession().getAttribute("account_info");
+		return "admin".equals(user.getName());
 	}
 
 	@RequestMapping(value = "/perm", method = RequestMethod.POST)
@@ -129,7 +134,8 @@ public class AccountController extends BaseController {
 		return new Result("更新成功!", true);
 	}
 
-	private List<Tree> trans(String perms) {
+	private List<Tree> trans(Account account,boolean isAdmin) {
+		String perms = account.getPerms();
 		List<Tree> lperm = new ArrayList<Tree>(3);
 		Tree first = new Tree("新增基本信息", 1l);
 		isChecked(perms.charAt(0), first);
@@ -142,6 +148,11 @@ public class AccountController extends BaseController {
 		Tree third = new Tree("追加服务信息", 3l);
 		isChecked(perms.charAt(2), third);
 		lperm.add(third);
+		if(isAdmin){
+			Tree allow = new Tree("允许登录后台", 4l);
+			isChecked(account.getAllow().toString().charAt(0), allow);
+			lperm.add(allow);
+		}
 		return lperm;
 	}
 

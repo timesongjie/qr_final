@@ -7,10 +7,11 @@
 		<result column="status" jdbcType="TINYINT" property="status" />
 		<result column="phone_number" jdbcType="VARCHAR" property="phoneNumber" />
 		<result column="perm" jdbcType="VARCHAR" property="perms" />
+		<result column="allow" jdbcType="TINYINT" property="allow" />
 	</resultMap>
 
 	<select id="queryAccount"  resultMap="accountMap" parameterType="com.heroopsys.qrcode.entity.Account">
-		select id,user_name as name,status,phone_number,perm from t_qrcode_account where 1 = 1
+		select id,user_name as name,status,phone_number,perm,allow from t_qrcode_account where 1 = 1
 		<if test="name != null">
 			and user_name=#{name}
 		</if>
@@ -60,6 +61,9 @@
 			</if>
 			<if test="perms != null">
 				perm = #{perms,jdbcType=VARCHAR},
+			</if>
+			<if test="allow != null">
+				allow = #{allow,jdbcType=TINYINT},
 			</if>
 		</set>
 		where id = #{id,jdbcType=INTEGER}

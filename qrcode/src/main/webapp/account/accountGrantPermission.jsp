@@ -13,6 +13,7 @@
 	var submitForm = function(_dialog, _grid, _$) {
 		var checked = $('#permissionTree').tree("getChecked");
 		var value = [ '0', '0', '0' ];
+		var allow = 0;
 		$(checked).each(function(i, e) {
 			if (e.id == 1) {
 				value[0] = '1';
@@ -20,10 +21,12 @@
 				value[1] = '1';
 			} else if (e.id == 3) {
 				value[2] = '1';
+			} else if (e.id == 4) {
+				allow = 1;
 			}
 		});
 		var id = ${param.id};
-		$.post("${accountGrantPermission}", {id:id,perms:value.join("")}, function(result) {
+		$.post("${accountGrantPermission}", {id:id,perms:value.join(""),allow:allow}, function(result) {
 			if (result.success) {
 				_grid.datagrid('load');
 				_dialog.dialog('destroy');

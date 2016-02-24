@@ -4,6 +4,7 @@ CREATE TABLE `t_qrcode_account`(
   `password` varchar(256) NOT NULL DEFAULT '' COMMENT '密码',
   `status` tinyint(1) DEFAULT 1 COMMENT '状态激活0 状态冻结1',
   `phone_number` varchar(256) DEFAULT '' COMMENT '手机号码',
+  `allow` tinyint(1) DEFAULT 0 COMMENT ' 不能登录后台0能够登录后台1'
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='账号表';
 
