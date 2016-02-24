@@ -18,11 +18,8 @@
         var currNoticeId = null;
         function formatter_Time(val,row){
             if(val != null){
-                var time = new String(val);
-                var hour = time.substr(0,2);
-                var minute = time.substr(2,2);
-                var second = time.substr(4,2);
-                return hour + ':' + minute + ':' + second;
+               var time = new String(val);
+               return time
             }
             else return "";
         }
@@ -105,10 +102,7 @@
                     field: 'addDate',
                     sortable: false,
                     width:200,
-                    formatter:function(value,row,index){
-                       var unixTimestamp = new Date(value);
-                       return unixTimestamp.toLocaleString();
-                    }
+                    formatter:formatter_Time
                     }]],
                 toolbar: '#toolbar',
                 onBeforeLoad: function (param) {
