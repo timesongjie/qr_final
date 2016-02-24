@@ -17,7 +17,7 @@ public class ObjectMappingCustomer extends ObjectMapper {
 
     public ObjectMappingCustomer() {
 	super();
-	DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	super.setDateFormat(df);
 	super.setSerializationInclusion(Include.NON_NULL);
 	super.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

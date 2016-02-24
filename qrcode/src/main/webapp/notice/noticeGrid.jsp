@@ -16,6 +16,16 @@
     <script type="text/javascript">
         var noticeGrid = null;
         var currNoticeId = null;
+        function formatter_Time(val,row){
+            if(val != null){
+                var time = new String(val);
+                var hour = time.substr(0,2);
+                var minute = time.substr(2,2);
+                var second = time.substr(4,2);
+                return hour + ':' + minute + ':' + second;
+            }
+            else return "";
+        }
         //新增通知
         var addFun = function () {
             var dialog = parent.modalDialog({
@@ -94,8 +104,12 @@
                     title: '添加时间',
                     field: 'addDate',
                     sortable: false,
-                    width:200
-                }]],
+                    width:200,
+                    formatter:function(value,row,index){
+                       var unixTimestamp = new Date(value);
+                       return unixTimestamp.toLocaleString();
+                    }
+                    }]],
                 toolbar: '#toolbar',
                 onBeforeLoad: function (param) {
                     parent.$.messager.progress({
