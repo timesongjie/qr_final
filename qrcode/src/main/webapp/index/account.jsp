@@ -16,7 +16,7 @@
 	</div>
 
 	<div id="sessionInfoDiv" style="position: absolute; right: 10px; top: 5px;">
-			欢迎您xxx
+			欢迎您
 	</div>
 	<div style="position: absolute; right: 0px; bottom: 0px;">
 		<a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#myInfoMenu',iconCls:'ext-icon-cog'">控制面板</a>

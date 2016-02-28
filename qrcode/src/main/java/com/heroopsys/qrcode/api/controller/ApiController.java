@@ -6,8 +6,11 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.heroopsys.qrcode.util.MD5Util;
 import com.heroopsys.qrcode.util.Pager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -44,27 +47,34 @@ public class ApiController {
 	private ServiceInfoService serviceInfoService;
 	@Resource
 	private NoticeService noticeService;
+	private Logger log = LoggerFactory.getLogger(ApiController.class);
 
 	@RequestMapping("/auth")
 	public Result<IUser> login(String name, String pwd) {
 		Result<IUser> result = new Result<IUser>();
-		Account account = new Account();
-		account.setName(name);
-		account.setPassword(pwd);
-		account = accountService.findByAccount(account);
-		if (account == null || account.getId() == null) {
+		try {
+			Account account = new Account();
+			account.setName(name);
+			account.setPassword(MD5Util.MD5(pwd));
+			account = accountService.findByAccount(account);
+			if (account == null || account.getId() == null) {
+				result.setStatus((byte) 1);
+				result.setMsg("登陆失败!");
+			} else {
+				IUser user = new IUser();
+				user.setUserName(name);
+				String perm = account.getPerms();
+				user.setEnable(new Byte[] { Byte.valueOf(perm.charAt(0) + ""),
+						Byte.valueOf(perm.charAt(1) + ""),
+						Byte.valueOf(perm.charAt(2) + "") });
+				result.setData(user);
+				result.setStatus((byte) 0);
+				result.setMsg("登陆成功!");
+			}
+		} catch (Exception e) {
+			log.error("登录失败" + e.getMessage());
 			result.setStatus((byte) 1);
-			result.setMsg("登陆失败!");
-		} else {
-			IUser user = new IUser();
-			user.setUserName(name);
-			String perm = account.getPerms();
-			user.setEnable(new Byte[] { Byte.valueOf(perm.charAt(0) + ""),
-					Byte.valueOf(perm.charAt(1) + ""),
-					Byte.valueOf(perm.charAt(2) + "") });
-			result.setData(user);
-			result.setStatus((byte) 0);
-			result.setMsg("登陆成功!");
+			result.setMsg("登陆异常!");
 		}
 		return result;
 	}
@@ -160,9 +170,9 @@ public class ApiController {
 		String data = request.getParameter("data");
 		try {
 			Device device = JacksonUtil.readValue(data, Device.class);
-			//新增时检查是否设备ID已经绑定了二维码
-			if(device != null && StringUtils.isEmpty(device.getId())){
-				if(deviceService.isExist(device.getDeviceCode())){
+			// 新增时检查是否设备ID已经绑定了二维码
+			if (device != null && StringUtils.isEmpty(device.getId())) {
+				if (deviceService.isExist(device.getDeviceCode())) {
 					result.setStatus((byte) 2);
 					return result;
 				}

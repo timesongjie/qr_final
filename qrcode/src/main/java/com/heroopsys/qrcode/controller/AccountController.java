@@ -17,6 +17,7 @@ import com.heroopsys.qrcode.common.controller.BaseController;
 import com.heroopsys.qrcode.entity.Account;
 import com.heroopsys.qrcode.service.AccountService;
 import com.heroopsys.qrcode.util.Grid;
+import com.heroopsys.qrcode.util.MD5Util;
 import com.heroopsys.qrcode.util.Pager;
 import com.heroopsys.qrcode.util.Result;
 import com.heroopsys.qrcode.util.Tree;
@@ -34,7 +35,7 @@ public class AccountController extends BaseController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public Result login(String username, String password,
 			HttpServletRequest request) {
-		Account account = new Account(username, password);
+		Account account = new Account(username, MD5Util.MD5(password));
 		account = accountService.findByAccount(account) ;
 		if (account!= null && account.getAllow() == 1) {
 			account.setPassword(password);
@@ -72,6 +73,7 @@ public class AccountController extends BaseController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	public Result addAccount(Account account, Model model) {
+		account.setPassword(MD5Util.MD5(account.getPassword()));
 		accountService.addAccount(account);
 		doClear(model, "account");
 		return new Result("添加成功!", true);
@@ -95,7 +97,7 @@ public class AccountController extends BaseController {
 		Account user = (Account) request.getSession().getAttribute("account_info");
 		account.setId(user.getId());
 		doClear(model, "account");
-		if(user.getPassword().equals(account.getOldPassword())){
+		if(user.getPassword().equals(MD5Util.MD5(account.getOldPassword()))){
 			accountService.updatePassword(account);
 		}else{
 			return new Result("修改失败!旧密码不对", true);
@@ -121,14 +123,20 @@ public class AccountController extends BaseController {
 
 	private boolean isAdmin(HttpServletRequest request) {
 		Account user = (Account) request.getSession().getAttribute("account_info");
-		return "admin".equals(user.getName());
+		return isAdmin(user);
 	}
 
+	private boolean isAdmin(Account account){
+		return "admin".equals(account.getName()) || (account.getId() != null && 1 == account.getId().intValue());
+	}
 	@RequestMapping(value = "/perm", method = RequestMethod.POST)
 	public Result grantPermission(Account account, Model model) {
 		if (StringUtils.isEmpty(account.getPerms())) {
 			account.setPerms("000");
 		}
+		if(isAdmin(account)){//保证管理员永远能够登录
+			account.setAllow((byte)1);
+		};
 		accountService.updateAccount(account);
 		doClear(model, "account");
 		return new Result("更新成功!", true);
@@ -148,7 +156,7 @@ public class AccountController extends BaseController {
 		Tree third = new Tree("追加服务信息", 3l);
 		isChecked(perms.charAt(2), third);
 		lperm.add(third);
-		if(isAdmin){
+		if(isAdmin && !isAdmin(account)){//admin登录并且设置的非admin用户，能够分配登录后台权限
 			Tree allow = new Tree("允许登录后台", 4l);
 			isChecked(account.getAllow().toString().charAt(0), allow);
 			lperm.add(allow);
